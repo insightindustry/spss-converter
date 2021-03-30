@@ -1,4 +1,5 @@
-from typing import Union, Path, Optional
+from typing import Union, Optional
+from os import PathLike
 import tempfile
 
 from io import BytesIO
@@ -12,7 +13,7 @@ DataFrame = pandas.DataFrame
 
 
 def from_dataframe(df: DataFrame,
-                   target: Optional[Union[Path, BytesIO]] = None,
+                   target: Optional[Union['PathLike[Any]', BytesIO]] = None,
                    metadata: Optional[Metadata] = None,
                    compress: bool = False):
     """Create an SPSS dataset from a `Pandas <https://pandas.pydata.org/>`_
@@ -118,8 +119,8 @@ def from_dataframe(df: DataFrame,
             return target
 
 
-def from_csv(as_csv: Union[str, Path, BytesIO],
-             target: Optional[Union[Path, BytesIO]] = None,
+def from_csv(as_csv: Union[str, 'PathLike[Any]', BytesIO],
+             target: Optional[Union['PathLike[Any]', BytesIO]] = None,
              compress: bool = False,
              **kwargs):
     """Convert a CSV file into an SPSS dataset.
@@ -164,7 +165,7 @@ def from_csv(as_csv: Union[str, Path, BytesIO],
 
 
 def from_dict(as_dict: dict,
-              target: Optional[Union[Path, BytesIO]] = None,
+              target: Optional[Union['PathLike[Any]', BytesIO]] = None,
               compress: bool = False,
               **kwargs):
     """Convert a CSV file into an SPSS dataset.
@@ -209,8 +210,8 @@ def from_dict(as_dict: dict,
     return result
 
 
-def from_json(as_json: Union[str, Path, BytesIO],
-              target: Optional[Union[Path, BytesIO]] = None,
+def from_json(as_json: Union[str, 'PathLike[Any]', BytesIO],
+              target: Optional[Union['PathLike[Any]', BytesIO]] = None,
               compress: bool = False,
               **kwargs):
     """Convert JSON data into an SPSS dataset.
@@ -254,8 +255,8 @@ def from_json(as_json: Union[str, Path, BytesIO],
     return result
 
 
-def from_yaml(as_yaml: Union[str, Path, BytesIO],
-              target: Optional[Union[Path, BytesIO]] = None,
+def from_yaml(as_yaml: Union[str, 'PathLike[Any]', BytesIO],
+              target: Optional[Union['PathLike[Any]', BytesIO]] = None,
               compress: bool = False,
               **kwargs):
     """Convert YAML data into an SPSS dataset.
@@ -306,7 +307,7 @@ def from_yaml(as_yaml: Union[str, Path, BytesIO],
 
 
 def from_excel(as_excel,
-               target: Optional[Union[Path, BytesIO]] = None,
+               target: Optional[Union['PathLike[Any]', BytesIO]] = None,
                compress: bool = False,
                **kwargs):
     """Convert Excel data into an SPSS dataset.

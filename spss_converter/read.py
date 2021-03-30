@@ -1,6 +1,7 @@
-from typing import Union, Path, List, Optional
+from typing import Union, List, Optional
 import tempfile
 
+import os
 from io import BytesIO, StringIO
 import simplejson as json
 import yaml
@@ -11,7 +12,7 @@ from spss_converter.Metadata import Metadata
 from pandas import ExcelWriter
 
 
-def _read_spss(data: Union[bytes, BytesIO, Path],
+def _read_spss(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
                limit: Optional[int] = None,
                offset: int = 0,
                exclude_variables: Optional[List[str]] = None,
@@ -101,9 +102,9 @@ def _read_spss(data: Union[bytes, BytesIO, Path],
       :class:`Metadata`
 
     """
-    if not any(checkers.is_file(data),
-               checkers.is_bytesIO(data),
-               checkers.is_type(data, bytes)):
+    if not any([checkers.is_file(data),
+                checkers.is_bytesIO(data),
+                checkers.is_type(data, bytes)]):
         raise errors.InvalidDataFormatError('data must be a filename, BytesIO, or bytes '
                                             f'object. Was: {data.__class__.__name__}')
 
@@ -119,22 +120,25 @@ def _read_spss(data: Union[bytes, BytesIO, Path],
         include_variables = [validators.string(x) for x in include_variables]
 
     if not checkers.is_file(data):
-        with tempfile.NamedTemporaryFile() as temp_file:
+        with tempfile.NamedTemporaryFile(delete = False) as temp_file:
             temp_file.write(data)
-            df, meta = pyreadstat.read_sav(temp_file.name,
-                                           metadata_only = metadata_only,
-                                           dates_as_pandas_datetime = dates_as_datetime64,
-                                           apply_value_formats = apply_labels,
-                                           formats_as_category = labels_as_categories,
-                                           usecols = include_variables,
-                                           user_missing = not missing_as_NaN,
-                                           disable_datetime_conversion = not convert_datetimes,
-                                           row_limit = limit or 0,
-                                           row_offset = offset,
-                                           **kwargs)
+            temp_file_name = temp_file.name
+
+        df, meta = pyreadstat.read_sav(temp_file_name,
+                                       metadataonly = metadata_only,
+                                       dates_as_pandas_datetime = dates_as_datetime64,
+                                       apply_value_formats = apply_labels,
+                                       formats_as_category = labels_as_categories,
+                                       usecols = include_variables,
+                                       user_missing = not missing_as_NaN,
+                                       disable_datetime_conversion = not convert_datetimes,
+                                       row_limit = limit or 0,
+                                       row_offset = offset,
+                                       **kwargs)
+        os.remove(temp_file_name)
     else:
         df, meta = pyreadstat.read_sav(data,
-                                       metadata_only = metadata_only,
+                                       metadataonly = metadata_only,
                                        dates_as_pandas_datetime = dates_as_datetime64,
                                        apply_value_formats = apply_labels,
                                        formats_as_category = labels_as_categories,
@@ -145,10 +149,13 @@ def _read_spss(data: Union[bytes, BytesIO, Path],
                                        row_offset = offset,
                                        **kwargs)
 
+    metadata = Metadata.from_pyreadstat(meta)
+
     if exclude_variables:
         df = df.drop(exclude_variables, axis = 1)
-
-    metadata = Metadata.from_pyreadstat(meta)
+        if metadata.column_metadata:
+            for variable in exclude_variables:
+                metadata.column_metadata.pop(variable, None)
 
     return df, metadata
 
@@ -167,7 +174,7 @@ def get_metadata(data):
     return _read_spss(data, metadata_only = True)[1]
 
 
-def to_dataframe(data: Union[bytes, BytesIO, Path],
+def to_dataframe(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
                  limit: Optional[int] = None,
                  offset: int = 0,
                  exclude_variables: Optional[List[str]] = None,
@@ -270,8 +277,8 @@ def to_dataframe(data: Union[bytes, BytesIO, Path],
                       **kwargs)
 
 
-def to_csv(data: Union[Path, BytesIO, bytes],
-           target: Optional[Union[Path, StringIO]] = None,
+def to_csv(data: Union['os.PathLike[Any]', BytesIO, bytes],
+           target: Optional[Union['os.PathLike[Any]', StringIO]] = None,
            include_header: bool = True,
            delimter: str = '|',
            null_text: str = 'NaN',
@@ -431,8 +438,8 @@ def to_csv(data: Union[Path, BytesIO, bytes],
     return result
 
 
-def to_json(data: Union[Path, BytesIO, bytes],
-            target: Optional[Union[Path, StringIO]] = None,
+def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
+            target: Optional[Union['os.PathLike[Any]', StringIO]] = None,
             layout: str = 'record',
             double_precision: int = 10,
             limit: Optional[int] = None,
@@ -574,8 +581,8 @@ def to_json(data: Union[Path, BytesIO, bytes],
     return result
 
 
-def to_yaml(data: Union[Path, BytesIO, bytes],
-            target: Optional[Union[Path, StringIO]] = None,
+def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
+            target: Optional[Union['os.PathLike[Any]', StringIO]] = None,
             layout: str = 'record',
             double_precision: int = 10,
             limit: Optional[int] = None,
@@ -722,7 +729,7 @@ def to_yaml(data: Union[Path, BytesIO, bytes],
         target_file.write(as_yaml)
 
 
-def to_dict(data: Union[Path, BytesIO, bytes],
+def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
             layout: str = 'record',
             double_precision: int = 10,
             limit: Optional[int] = None,
@@ -849,8 +856,8 @@ def to_dict(data: Union[Path, BytesIO, bytes],
     return as_dict
 
 
-def to_excel(data: Union[Path, BytesIO, bytes],
-             target: Optional[Union[Path, BytesIO, ExcelWriter]] = None,
+def to_excel(data: Union['os.PathLike[Any]', BytesIO, bytes],
+             target: Optional[Union['os.PathLike[Any]', BytesIO, ExcelWriter]] = None,
              sheet_name: str = 'Sheet1',
              start_row: int = 0,
              start_column: int = 0,

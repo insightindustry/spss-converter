@@ -36,7 +36,7 @@ class ColumnMetadata(object):
         self._storage_width = None
 
         for key in kwargs:
-            value = kwargs.pop(key)
+            value = kwargs.get(key)
             setattr(self, key, value)
 
     @property
@@ -187,8 +187,8 @@ class ColumnMetadata(object):
                                      ' boundary to be defined.')
 
                 validated_range = {
-                    'high': validators.numeric(value, allow_empty = False),
-                    'low': validators.numeric(value, allow_empty = False)
+                    'high': validators.numeric(range.get('high'), allow_empty = False),
+                    'low': validators.numeric(range.get('low'), allow_empty = False)
                 }
 
                 validated_ranges.append(validated_range)
@@ -214,6 +214,7 @@ class ColumnMetadata(object):
     def missing_value_metadata(self, value):
         if not value:
             self._missing_value_metadata = None
+            return
         elif checkers.is_string(value):
             value = [value]
         elif checkers.is_numeric(value):
@@ -374,7 +375,7 @@ class Metadata(object):
         self._file_label = None
 
         for key in kwargs:
-            setattr(self, key, kwargs.pop(key))
+            setattr(self, key, kwargs.get(key))
 
     @property
     def column_metadata(self):
@@ -403,6 +404,8 @@ class Metadata(object):
                 else:
                     result[key] = ColumnMetadata.from_dict(result[key])
 
+            self._column_metadata = result
+
     @property
     def file_encoding(self) -> str:
         """The file encoding for the dataset.
@@ -425,6 +428,8 @@ class Metadata(object):
 
     @notes.setter
     def notes(self, value):
+        if checkers.is_iterable(value):
+            value = '\n'.join(value)
         self._notes = validators.string(value, allow_empty = True)
 
     @property
@@ -536,8 +541,12 @@ class Metadata(object):
         instance.notes = as_metadata.notes
         instance.table_name = as_metadata.table_name
         instance.file_label = as_metadata.file_label
-        instance.rows = as_metadata.rows
+        instance.rows = as_metadata.number_rows
         instance.file_encoding = as_metadata.file_encoding
+
+        column_metadata = {}
+        for x in as_metadata.column_names:
+            column_metadata[x] = ColumnMetadata.from_pyreadstat_metadata(x, as_metadata)
 
         instance.column_metadata = {
             x: ColumnMetadata.from_pyreadstat_metadata(x, as_metadata)
