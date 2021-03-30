@@ -428,7 +428,7 @@ def to_csv(data: Union['os.PathLike[Any]', BytesIO, bytes],
                        na_rep = null_text,
                        header = include_header,
                        quotechar = wrapper_character,
-                       line_temrinator = line_terminator,
+                       line_terminator = line_terminator,
                        escapechar = escape_character,
                        decimal = decimal)
 
@@ -440,7 +440,7 @@ def to_csv(data: Union['os.PathLike[Any]', BytesIO, bytes],
 
 def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
             target: Optional[Union['os.PathLike[Any]', StringIO]] = None,
-            layout: str = 'record',
+            layout: str = 'records',
             double_precision: int = 10,
             limit: Optional[int] = None,
             offset: int = 0,
@@ -470,13 +470,13 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :param layout: Indicates the layout schema to use for the JSON representation of the
       data. Accepts:
 
-        * ``record``, where the resulting JSON object represents an array of objects where
+        * ``records``, where the resulting JSON object represents an array of objects where
           each object corresponds to a single record, with key/value pairs for each column
           and that record's corresponding value
         * ``table``, where the resulting JSON object contains a metadata (data map)
           describing the data schema along with the resulting collection of record objects
 
-      Defaults to ``record``.
+      Defaults to ``records``.
     :type layout: :class:`str <python:str>`
 
     :param double_precision: Indicates the precision (places beyond the decimal point) to
@@ -546,7 +546,7 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :type dates_as_datetime64: :class:`bool <python:bool>`
 
     :returns: :obj:`None <python:None>` if ``target`` was not :obj:`None <python:None>`,
-      otherwise a :class:`str <python:str>` representation of the CSV file.
+      otherwise a :class:`str <python:str>` representation of the JSON output.
     :rtype: :obj:`None <python:None>` or :class:`str <python:str>`
 
     """
@@ -554,8 +554,8 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
         raise errors.InvalidDataFormatError('target must be a filename, StringIO object, '
                                             f'or None. Was: {data.__class__.__name__}')
 
-    if layout not in ['record', 'table']:
-        raise errors.InvalidLayoutError('layout must be either "record" or "table". '
+    if layout not in ['records', 'table']:
+        raise errors.InvalidLayoutError('layout must be either "records" or "table". '
                                         f'Was: "{layout}"')
 
     df, metadata = _read_spss(data,
@@ -583,7 +583,7 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
 
 def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
             target: Optional[Union['os.PathLike[Any]', StringIO]] = None,
-            layout: str = 'record',
+            layout: str = 'records',
             double_precision: int = 10,
             limit: Optional[int] = None,
             offset: int = 0,
@@ -613,13 +613,13 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :param layout: Indicates the layout schema to use for the JSON representation of the
       data. Accepts:
 
-        * ``record``, where the resulting YAML object represents an array of objects where
+        * ``records``, where the resulting YAML object represents an array of objects where
           each object corresponds to a single record, with key/value pairs for each column
           and that record's corresponding value
         * ``table``, where the resulting JSON object contains a metadata (data map)
           describing the data schema along with the resulting collection of record objects
 
-      Defaults to ``record``.
+      Defaults to ``records``.
     :type layout: :class:`str <python:str>`
 
     :param double_precision: Indicates the precision (places beyond the decimal point) to
@@ -689,7 +689,7 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :type dates_as_datetime64: :class:`bool <python:bool>`
 
     :returns: :obj:`None <python:None>` if ``target`` was not :obj:`None <python:None>`,
-      otherwise a :class:`str <python:str>` representation of the CSV file.
+      otherwise a :class:`str <python:str>` representation of the YAML output.
     :rtype: :obj:`None <python:None>` or :class:`str <python:str>`
 
     """
@@ -697,8 +697,8 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
         raise errors.InvalidDataFormatError('target must be a filename, StringIO object, '
                                             f'or None. Was: {data.__class__.__name__}')
 
-    if layout not in ['record', 'table']:
-        raise errors.InvalidLayoutError('layout must be either "record" or "table". '
+    if layout not in ['records', 'table']:
+        raise errors.InvalidLayoutError('layout must be either "records" or "table". '
                                         f'Was: "{layout}"')
 
     df, metadata = _read_spss(data,
@@ -730,7 +730,7 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
 
 
 def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
-            layout: str = 'record',
+            layout: str = 'records',
             double_precision: int = 10,
             limit: Optional[int] = None,
             offset: int = 0,
@@ -752,13 +752,13 @@ def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :param layout: Indicates the layout schema to use for the JSON representation of the
       data. Accepts:
 
-        * ``record``, where the resulting YAML object represents an array of objects where
+        * ``records``, where the resulting YAML object represents an array of objects where
           each object corresponds to a single record, with key/value pairs for each column
           and that record's corresponding value
         * ``table``, where the resulting JSON object contains a metadata (data map)
           describing the data schema along with the resulting collection of record objects
 
-      Defaults to ``record``.
+      Defaults to ``records``.
     :type layout: :class:`str <python:str>`
 
     :param double_precision: Indicates the precision (places beyond the decimal point) to
@@ -828,12 +828,13 @@ def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :type dates_as_datetime64: :class:`bool <python:bool>`
 
     :returns: :obj:`None <python:None>` if ``target`` was not :obj:`None <python:None>`,
-      otherwise a :class:`str <python:str>` representation of the CSV file.
+      otherwise a :class:`list <python:list>` of :class:`dict <python:dict>` if ``layout``
+      is ``records``, or a :class:`dict <python:dict>` if ``layout`` is ``table``.
     :rtype: :obj:`None <python:None>` or :class:`str <python:str>`
 
     """
-    if layout not in ['record', 'table']:
-        raise errors.InvalidLayoutError('layout must be either "record" or "table". '
+    if layout not in ['records', 'table']:
+        raise errors.InvalidLayoutError('layout must be either "records" or "table". '
                                         f'Was: "{layout}"')
 
     as_json = to_json(data,
@@ -970,7 +971,7 @@ def to_excel(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :type dates_as_datetime64: :class:`bool <python:bool>`
 
     :returns: :obj:`None <python:None>` if ``target`` was not :obj:`None <python:None>`,
-      otherwise a :class:`str <python:str>` representation of the CSV file.
+      otherwise a :class:`BytesIO <python:BytesIO>` representation of the Excel file.
     :rtype: :obj:`None <python:None>` or :class:`str <python:str>`
 
     """
