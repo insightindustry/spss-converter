@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union, Optional, Any
 from os import PathLike
 import tempfile
 
@@ -157,6 +157,9 @@ def from_csv(as_csv: Union[str, 'PathLike[Any]', BytesIO],
 
     """
     df = pandas.read_csv(as_csv, **kwargs)
+    if 'Unnamed: 0' in df:
+        df = df.drop(['Unnamed: 0'], axis = 1)
+
     result = from_dataframe(df,
                             target = target,
                             compress = compress)
@@ -168,7 +171,7 @@ def from_dict(as_dict: dict,
               target: Optional[Union['PathLike[Any]', BytesIO]] = None,
               compress: bool = False,
               **kwargs):
-    """Convert a CSV file into an SPSS dataset.
+    """Convert a :class:`dict <python:dict>` object into an SPSS dataset.
 
     .. tip::
 
@@ -345,6 +348,8 @@ def from_excel(as_excel,
 
     """
     df = pandas.read_excel(as_excel, **kwargs)
+    if 'Unnamed: 0' in df:
+        df = df.drop(['Unnamed: 0'], axis = 1)
 
     result = from_dataframe(df,
                             target = target,
@@ -375,9 +380,7 @@ def apply_metadata(df: DataFrame,
     """
     if not checkers.is_type(df, 'DataFrame'):
         raise ValueError(f'df must be a pandas.DataFrame. Was: {df.__class__.__name__}')
-    if not checkers.is_type(metadata, ('Metadata',
-                                                    'metadata_container',
-                                                    'dict')):
+    if not checkers.is_type(metadata, ('Metadata', 'metadata_container', 'dict')):
         raise ValueError(f'metadata must be a Metadata instance or compatible object. '
                          f'Was: {metadata.__class__.__name__}')
     elif checkers.is_type(metadata, 'metadata_container'):

@@ -333,12 +333,13 @@ class ColumnMetadata(object):
         :rtype: :class:`metadata_container <pyreadstat:_readstat_parser.metadata_container`
         """
         pyreadstat.column_names_to_labels[self.name] = self.label
-        pyreadstat.variable_alignment[self.name] = self.alignment.value
-        pyreadstat.variable_measure[self.name] = self.measure.value
+        pyreadstat.variable_alignment[self.name] = str(self.alignment)
+        pyreadstat.variable_measure[self.name] = str(self.measure)
         pyreadstat.variable_display_width[self.name] = self.display_width
         pyreadstat.variable_storage_width[self.name] = self.storage_width
-        pyreadstat.variable_value_labels[self.name] = self.value_metadata
-        pyreadstat.value_labels[self.label] = self.value_metadata
+        if self.value_metadata is not None:
+            pyreadstat.variable_value_labels[self.name] = self.value_metadata
+            pyreadstat.value_labels[self.label] = self.value_metadata
         pyreadstat.variable_to_label[self.name] = self.label
 
         if self.missing_range_metadata:
@@ -566,7 +567,11 @@ class Metadata(object):
         as_metadata.table_name = self.table_name
         as_metadata.file_label = self.file_label
         as_metadata.file_encoding = self.file_encoding
-        as_metadata.notes = self.notes
+        if self.notes and len(self.notes.split('\n')) > 1:
+            notes = self.notes[0]
+        else:
+            notes = self.notes
+        as_metadata.notes = notes
         as_metadata.rows = self.rows
 
         for column in self.column_metadata:
