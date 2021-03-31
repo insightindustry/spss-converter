@@ -59,24 +59,11 @@ data to / from a variety of formats, including:
 Installation
 ***************
 
-via Pip
-============
-
 To install the **SPSS Converter** via Pip just execute:
 
 .. code:: bash
 
  $ pip install spss-converter
-
-via Conda Forge
-=====================
-
-To install the **SPSS Converter** from Conda Forge, just execute:
-
-.. code:: bash
-
- $ conda install -c conda-forge spss-converter
-
 
 Dependencies
 ==============

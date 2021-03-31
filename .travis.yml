@@ -1,0 +1,45 @@
+language: python
+sudo: false
+dist: trusty
+cache: pip
+
+env:
+  global:
+    - PYTHONFAULTHANDLER=x
+
+matrix:
+  include:
+    - python: '3.9'
+      dist: bionic
+      sudo: true
+      env:
+        - TOXENV=.python39
+    - python: '3.8'
+      dist: bionic
+      sudo: true
+      env:
+        - TOXENV=.python38
+    - python: '3.7'
+      dist: bionic
+      sudo: true
+      env:
+        - TOXENV=.python37
+
+## PYTHON 3.8 - OTHER TESTS
+    - python: '3.8'
+      dist: bionic
+      sudo: true
+      env: TOXENV=docs
+    - python: '3.8'
+      dist: bionic
+      sudo: true
+      env: TOXENV=coverage
+
+install:
+  - pip install -U tox codecov
+
+script:
+  - tox -- -v
+
+after_success:
+  - if [[ -e .coverage ]]; then codecov -e $TOXENV; fi

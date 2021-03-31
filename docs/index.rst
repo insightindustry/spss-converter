@@ -63,8 +63,6 @@ data to / from a variety of formats, including:
   * Excel
   * `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
 
-**COMPLETE DOCUMENTATION:** http://spss-converter.readthedocs.org/en/latest/index.html
-
 .. contents::
  :depth: 3
  :backlinks: entry
@@ -165,7 +163,7 @@ perfectly reasonable alternatives:
       Honestly, since initially building this wrapper I rarely use
       `Pyreadstat <https://github.com/Roche/pyreadstat>`_ and
       `Pandas <https://pandas.pydata.org>`_ directly. Mostly, this is a matter of
-      syntactical taste and personal preference, however.
+      syntactical taste and personal preference.
 
       However, I would definitely look to those libraries directly if I were:
 
@@ -173,58 +171,60 @@ perfectly reasonable alternatives:
         * working in older versions of Python (< 3.7)
         * working with other formats of data than SPSS
 
-    **Using SPSS Converter**
+    .. tabs::
 
-      .. code-block:: python
-        :linenos:
+      .. tab:: Using SPSS Converter
 
-        from spss_converter import read, write
+        .. code-block:: python
+          :linenos:
 
-        # SPSS File to CSV
-        read.to_csv('my-spss-file.sav',
-                    target = 'my-csv-file.csv')
+          from spss_converter import read, write
 
-        # CSV to SPSS File
-        write.from_csv('my-csv-file.csv',
-                       target = 'my-spss-file.sav')
+          # SPSS File to CSV
+          read.to_csv('my-spss-file.sav',
+                      target = 'my-csv-file.csv')
 
-        # SPSS File to Excel file
-        read.to_excel('my-spss-file.sav',
-                      target = 'my-excel-file.xlsx')
-
-        # Excel to SPSS file
-        write.from_excel('my-excel-file.xlsx',
+          # CSV to SPSS File
+          write.from_csv('my-csv-file.csv',
                          target = 'my-spss-file.sav')
 
-        # ... similar pattern for other formats
+          # SPSS File to Excel file
+          read.to_excel('my-spss-file.sav',
+                        target = 'my-excel-file.xlsx')
 
-    **Using Pyreadstat and Pandas**
+          # Excel to SPSS file
+          write.from_excel('my-excel-file.xlsx',
+                           target = 'my-spss-file.sav')
 
-    .. code-block:: python
-      :linenos:
+          # ... similar pattern for other formats
 
-      import pyreadstat
-      import pandas
+      .. tab:: Using Pyreadstat and Pandas
 
-      # SPSS File to CSV
-      df, metadata = pyreadstat.read_sav('my-spss-file.sav')
-      csv_file = df.to_csv('my-csv-file.csv')
+        .. code-block:: python
+          :linenos:
 
-      # CSV to SPSS file
-      df = pandas.read_csv('my-csv-file.csv')
-      spss_file = pyreadstat.write_sav(df,
-                                       'my-spss-file.sav')
+          import pyreadstat
+          import pandas
 
-      # SPSS File to Excel File
-      df, metadata = pyreadstat.read_sav('my-spss-file.sav')
-      excel_file = df.to_excel('my-excel-file.xlsx')
+          # SPSS File to CSV
+          df, metadata = pyreadstat.read_sav('my-spss-file.sav')
+          csv_file = df.to_csv('my-csv-file.csv')
 
-      # Excel file to SPSS file
-      df = pandas.read_excel('my-excel-file.xlsx')
-      spss_file = pyreadstat.write_sav(df,
-                                       'my-spss-file.sav')
+          # CSV to SPSS file
+          df = pandas.read_csv('my-csv-file.csv')
+          spss_file = pyreadstat.write_sav(df,
+                                           'my-spss-file.sav')
 
-      # .. similar pattern for other formats
+          # SPSS File to Excel File
+          df, metadata = pyreadstat.read_sav('my-spss-file.sav')
+          excel_file = df.to_excel('my-excel-file.xlsx')
+
+          # Excel file to SPSS file
+          df = pandas.read_excel('my-excel-file.xlsx')
+          spss_file = pyreadstat.write_sav(df,
+                                           'my-spss-file.sav')
+
+          # .. similar pattern for other formats
 
   .. tab:: savReaderWriter
 
