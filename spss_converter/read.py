@@ -187,8 +187,7 @@ def to_dataframe(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
                  dates_as_datetime64: bool = False,
                  **kwargs):
     """Reads SPSS data and returns a :class:`tuple <python:tuple>` with a Pandas
-    :class:`DataFrame <pandas:pandas.DataFrame>` object and a metadata
-    :class:`dict <python:dict>`.
+    :class:`DataFrame <pandas:pandas.DataFrame>` object and relevant :class:`Metadata`.
 
     :param data: The SPSS data to load. Accepts either a series of bytes or a filename.
     :type data: Path-like filename, :class:`bytes <python:bytes>` or
@@ -257,10 +256,10 @@ def to_dataframe(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
     :type dates_as_datetime64: :class:`bool <python:bool>`
 
     :returns: A :class:`DataFrame <pandas:DataFrame>` representation of the SPSS data (or
-      :obj:`None <python:None>`) and a :class:`dict <python:dict>` representation of the
+      :obj:`None <python:None>`) and a :class:`Metadata <Metadata>` representation of the
       data's meta-data (value and labels / data map).
     :rtype: :class:`pandas.DataFrame <pandas:DataFrame>`/:obj:`None <python:None>` and
-      :class:`dict <python:dict>`
+      :class:`Metadata <Metadata>`
 
     """
     return _read_spss(data,

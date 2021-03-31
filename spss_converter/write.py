@@ -4,6 +4,7 @@ import tempfile
 
 from io import BytesIO
 import yaml
+import simplejson as json
 import pyreadstat
 from validator_collection import validators, checkers
 from spss_converter.Metadata import Metadata
@@ -122,6 +123,7 @@ def from_dataframe(df: DataFrame,
 def from_csv(as_csv: Union[str, 'PathLike[Any]', BytesIO],
              target: Optional[Union['PathLike[Any]', BytesIO]] = None,
              compress: bool = False,
+             delimiter = '|',
              **kwargs):
     """Convert a CSV file into an SPSS dataset.
 
@@ -146,6 +148,9 @@ def from_csv(as_csv: Union[str, 'PathLike[Any]', BytesIO],
       ``False``, will return data in the standards SAV format. Defaults to ``False``.
     :type compress: :class:`bool <python:bool>`
 
+    :param delimiter: The delimiter used between columns. Defaults to ``|``.
+    :type delimiter: :class:`str <python:str>`
+
     :param kwargs: Additional keyword arguments which will be passed onto the
       :func:`pandas.read_csv() <pandas:pandas.read_csv>` function.
     :type kwargs: :class:`dict <python:dict>`
@@ -156,7 +161,9 @@ def from_csv(as_csv: Union[str, 'PathLike[Any]', BytesIO],
     :rtype: :class:`BytesIO <python:io.BytesIO>` or :obj:`None <python:None>`
 
     """
-    df = pandas.read_csv(as_csv, **kwargs)
+    df = pandas.read_csv(as_csv,
+                         delimiter = delimiter,
+                         **kwargs)
     if 'Unnamed: 0' in df:
         df = df.drop(['Unnamed: 0'], axis = 1)
 
@@ -302,8 +309,9 @@ def from_yaml(as_yaml: Union[str, 'PathLike[Any]', BytesIO],
     else:
         as_yaml = validators.string(as_yaml, allow_empty = False)
         as_dict = yaml.safe_load(as_yaml)
+        as_json = json.dumps(as_dict)
 
-    return from_dict(as_dict,
+    return from_json(as_json,
                      target = target,
                      compress = compress,
                      **kwargs)

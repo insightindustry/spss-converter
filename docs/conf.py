@@ -24,7 +24,7 @@ import sphinx_rtd_theme
 version_dict = {}
 with open(os.path.join(os.path.dirname(__file__),
                        '../',
-                       'sqlathanor',
+                       'spss_converter',
                        '__version__.py')) as version_file:
     exec(version_file.read(), version_dict)                                     # pylint: disable=W0122
 
@@ -102,7 +102,7 @@ html_context = {
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.6', None),
+    'python': ('https://docs.python.org/3.8', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
     'validator-collection': ('http://validator-collection.readthedocs.io/en/latest/', None),
 }

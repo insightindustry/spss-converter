@@ -38,6 +38,22 @@ SPSS Converter
          :target: http://spss-converter.readthedocs.io/en/latest/?badge=v.0.1.0
          :alt: Documentation Status (ReadTheDocs)
 
+.. toctree::
+ :hidden:
+ :maxdepth: 3
+ :caption: Contents:
+
+ Home <self>
+ Quickstart: Patterns and Best Practices <quickstart>
+ Using the SPSS Converter <using>
+ API Reference <api>
+ Error Reference <errors>
+ Contributor Guide <contributing>
+ Testing Reference <testing>
+ Release History <history>
+ Glossary <glossary>
+ License <license>
+
 The **SPSS Converter** is a simple utility that facilitates the easy conversion of SPSS
 data to / from a variety of formats, including:
 
@@ -64,16 +80,7 @@ Installation
 Dependencies
 ==============
 
-.. list-table::
-   :widths: 50 50
-   :header-rows: 1
-
-   * - Python 3.x
-   * - | * `Pandas v0.24 <https://pandas.pydata.org/docs/>`_ or higher
-       | * `Pyreadstat v1.0 <https://github.com/Roche/pyreadstat>`_ or higher
-       | * `PyYAML v3.10 <https://github.com/yaml/pyyaml>`_ or higher
-       | * `simplejson v3.0 <https://simplejson.readthedocs.io/en/latest/>`_ or higher
-       | * `Validator-Collection v1.5.0 <https://github.com/insightindustry/validator-collection>`_ or higher
+.. include:: _dependencies.rst
 
 -------------
 
@@ -97,16 +104,15 @@ The semantics are super simple, and should be as simple as: ``spss_converter.to_
 or ``spss_converter.from_json('my-json-file.json')``.
 
 Key **SPSS Converter** Features
-==============================
+====================================
 
 * With one function call, convert an SPSS file into:
 
+  * a `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
   * CSV
   * JSON
-  * a `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
   * YAML
   * Excel
-  * ODS
   * a :class:`dict <python:dict>`
 
 * With one function call, create an SPSS data file from data in:
@@ -116,7 +122,6 @@ Key **SPSS Converter** Features
   * JSON
   * YAML
   * Excel
-  * ODS
   * a :class:`dict <python:dict>`
 
 * With one function call, generate a Pythonic data map or meta-data collection from your
@@ -246,7 +251,7 @@ perfectly reasonable alternatives:
 
       * When you actually need to dive into the data at the level of particular cases
         or values.
-      * When your data has :term:`Multiple Response Sets <Multiple Respones Set>`, which
+      * When your data has :term:`Multiple Response Sets <Multiple Response Set>`, which
         are not (yet) supported by either
         `Pyreadstat <https://github.com/Roche/pyreadstat>`_ or the **SPSS Converter**.
 

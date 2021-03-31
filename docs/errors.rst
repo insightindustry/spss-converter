@@ -34,21 +34,21 @@ SPSSConverterError (from :class:`ValueError <python:ValueError>`)
 
 ----------------
 
-ColumnNameNotFoundError (from :class:`SQLAthanorError`)
+ColumnNameNotFoundError (from :class:`SPSSConverterError`)
 --------------------------------------------------------------------
 
 .. autoclass:: ColumnNameNotFoundError
 
 ----------------
 
-InvalidDataFormatError (from :class:`SQLAthanorError`)
+InvalidDataFormatError (from :class:`SPSSConverterError`)
 ----------------------------------------------------------
 
 .. autoclass:: InvalidDataFormatError
 
 ----------------
 
-InvalidLayoutError (from :class:`SQLAthanorError`)
+InvalidLayoutError (from :class:`SPSSConverterError`)
 -------------------------------------------------------
 
 .. autoclass:: InvalidLayoutError

@@ -45,7 +45,7 @@ data to / from a variety of formats, including:
   * JSON
   * YAML
   * Excel
-  * Pandas DataFrame
+  * Pandas ``DataFrame``
 
 **COMPLETE DOCUMENTATION:** http://spss-converter.readthedocs.org/en/latest/index.html
 
@@ -59,11 +59,23 @@ data to / from a variety of formats, including:
 Installation
 ***************
 
-To install the **SPSS Converter**, just execute:
+via Pip
+============
+
+To install the **SPSS Converter** via Pip just execute:
 
 .. code:: bash
 
  $ pip install spss-converter
+
+via Conda Forge
+=====================
+
+To install the **SPSS Converter** from Conda Forge, just execute:
+
+.. code:: bash
+
+ $ conda install -c conda-forge spss-converter
 
 
 Dependencies
@@ -76,6 +88,7 @@ Dependencies
    * - Python 3.x
    * - | * `Pandas v0.24 <https://pandas.pydata.org/docs/>`_ or higher
        | * `Pyreadstat v1.0 <https://github.com/Roche/pyreadstat>`_ or higher
+       | * `OpenPyXL v.3.0.7 <https://openpyxl.readthedocs.io/en/stable/>`_ or higher
        | * `PyYAML v3.10 <https://github.com/yaml/pyyaml>`_ or higher
        | * `simplejson v3.0 <https://simplejson.readthedocs.io/en/latest/>`_ or higher
        | * `Validator-Collection v1.5.0 <https://github.com/insightindustry/validator-collection>`_ or higher
@@ -94,25 +107,36 @@ vital tools, incredibly well-constructed, designed, and managed. But over the ye
 have found that converting from SPSS to other file formats using these libraries requires
 some fairly repetitive boilerplate code. So why not make it easier?
 
-The **SPSS Converter** library is a simple wrapper around the `Pyreadstat <>`_ and
+The **SPSS Converter** library is a simple wrapper around the
+`Pyreadstat <https://github.com/Roche/pyreadstat>`_ and
 `Pandas <https://pandas.pydata.org>`_ libraries that provides a clean and simple API for
 reading data files in a variety of formats and converting them to a variety of formats.
 The semantics are super simple, and should be as simple as: ``spss_converter.to_csv('my-spss-file.sav')``
 or ``spss_converter.from_json('my-json-file.json')``.
 
 Key **SPSS Converter** Features
-==============================
+====================================
 
 * With one function call, convert an SPSS file into:
 
+  * a `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
   * CSV
   * JSON
-  * Pandas DataFrame
   * YAML
   * Excel
+  * a :class:`dict <python:dict>`
 
-* With one function call, generate a data map or meta-data collection from your SPSS
-  data file.
+* With one function call, create an SPSS data file from data in:
+
+  * a `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
+  * CSV
+  * JSON
+  * YAML
+  * Excel
+  * a :class:`dict <python:dict>`
+
+* With one function call, generate a Pythonic data map or meta-data collection from your
+  SPSS data file.
 * Decide which variables (columns) you want to include / exclude when doing your
   conversion.
 
