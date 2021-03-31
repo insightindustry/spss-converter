@@ -69,7 +69,7 @@ Dependencies
 ==============
 
 .. list-table::
-   :widths: 50 50
+   :widths: 100
    :header-rows: 1
 
    * - Python 3.x
@@ -106,21 +106,21 @@ Key **SPSS Converter** Features
 
 * With one function call, convert an SPSS file into:
 
-  * a `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
+  * a `Pandas <https://pandas.pydata.org>`_ ``DataFrame``
   * CSV
   * JSON
   * YAML
   * Excel
-  * a :class:`dict <python:dict>`
+  * a ``dict``
 
 * With one function call, create an SPSS data file from data in:
 
-  * a `Pandas <https://pandas.pydata.org/>`_ :class:`DataFrame <pandas:pandas.DataFrame>`
+  * a `Pandas <https://pandas.pydata.org>`_ ``DataFrame``
   * CSV
   * JSON
   * YAML
   * Excel
-  * a :class:`dict <python:dict>`
+  * a ``dict``
 
 * With one function call, generate a Pythonic data map or meta-data collection from your
   SPSS data file.
