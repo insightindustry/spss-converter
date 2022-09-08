@@ -1,5 +1,27 @@
 ------------------
 
+Release 0.1.2
+=========================================
+
+.. image:: https://travis-ci.com/insightindustry/spss-converter.svg?branch=v.0.1.2
+   :target: https://travis-ci.com/insightindustry/spss-converter
+   :alt: Build Status (Travis CI)
+
+.. image:: https://codecov.io/gh/insightindustry/spss-converter/branch/v.0.1.2/graph/badge.svg
+   :target: https://codecov.io/gh/insightindustry/spss-converter
+   :alt: Code Coverage Status (Codecov)
+
+.. image:: https://readthedocs.org/projects/spss-converter/badge/?version=v.0.1.2
+   :target: http://spss-converter.readthedocs.io/en/latest/?badge=v.0.1.2
+   :alt: Documentation Status (ReadTheDocs)
+
+* Fixed a bug in the call to pyreadstat ``set_value_labels()``
+  (thanks, `@schnazel! <https://github.com/schnazel/>`_)
+* fixed a bug in the passing of a file name string to ``pyreadstat.write_sav()``
+  (thanks, `@schnazel! <https://github.com/schnazel>`_)
+
+---------------------
+
 Release 0.1.1
 =========================================
 
