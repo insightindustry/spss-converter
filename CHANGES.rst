@@ -15,10 +15,11 @@ Release 0.1.2
    :target: http://spss-converter.readthedocs.io/en/latest/?badge=v.0.1.2
    :alt: Documentation Status (ReadTheDocs)
 
-* Fixed a bug in the call to pyreadstat ``set_value_labels()``
+* Fixed a bug in the call to ``pyreadstat.set_value_labels()``
   (thanks, `@schnazel! <https://github.com/schnazel/>`_)
-* fixed a bug in the passing of a file name string to ``pyreadstat.write_sav()``
+* Fixed a bug in the passing of a file name string to ``pyreadstat.write_sav()``
   (thanks, `@schnazel! <https://github.com/schnazel>`_)
+* Fixed dependencies used in CI for ``TOXENV=docs``.
 
 ---------------------
 
