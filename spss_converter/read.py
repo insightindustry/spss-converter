@@ -1,4 +1,4 @@
-from typing import Union, List, Optional
+from typing import Union, List, Optional, Any
 import tempfile
 
 import os
@@ -33,8 +33,9 @@ def _read_spss(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
     :type data: Path-like filename, :class:`bytes <python:bytes>` or
       :class:`BytesIO <python:io.bytesIO>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -193,8 +194,9 @@ def to_dataframe(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
     :type data: Path-like filename, :class:`bytes <python:bytes>` or
       :class:`BytesIO <python:io.bytesIO>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -242,8 +244,8 @@ def to_dataframe(data: Union[bytes, BytesIO, 'os.PathLike[Any]'],
       :class:`datetime <python:datetime.datetime>`, or
       :class:`date <python:datetime.date>`, etc. representations (or Pandas
       :class:`datetime64 <pandas:datetime64>`, depending on the ``dates_as_datetime64``
-      parameter). If ``False``, will leave the original integer representation. Defaults to
-      ``True``.
+      parameter). If ``False``, will leave the original integer representation. Defaults
+      to ``True``.
     :type convert_datetimes: :class:`bool <python:bool>`
 
     :param dates_as_datetime64: If ``True``, will return any date values as Pandas
@@ -338,8 +340,9 @@ def to_csv(data: Union['os.PathLike[Any]', BytesIO, bytes],
       Defaults to ``.``.
     :type decimal: :class:`str <python:str>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -387,8 +390,8 @@ def to_csv(data: Union['os.PathLike[Any]', BytesIO, bytes],
       :class:`datetime <python:datetime.datetime>`, or
       :class:`date <python:datetime.date>`, etc. representations (or Pandas
       :class:`datetime64 <pandas:datetime64>`, depending on the ``dates_as_datetime64``
-      parameter). If ``False``, will leave the original integer representation. Defaults to
-      ``True``.
+      parameter). If ``False``, will leave the original integer representation. Defaults
+      to ``True``.
     :type convert_datetimes: :class:`bool <python:bool>`
 
     :param dates_as_datetime64: If ``True``, will return any date values as Pandas
@@ -469,9 +472,9 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :param layout: Indicates the layout schema to use for the JSON representation of the
       data. Accepts:
 
-        * ``records``, where the resulting JSON object represents an array of objects where
-          each object corresponds to a single record, with key/value pairs for each column
-          and that record's corresponding value
+        * ``records``, where the resulting JSON object represents an array of objects
+          where each object corresponds to a single record, with key/value pairs for each
+          column and that record's corresponding value
         * ``table``, where the resulting JSON object contains a metadata (data map)
           describing the data schema along with the resulting collection of record objects
 
@@ -482,8 +485,9 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
       apply for floating point values. Defaults to ``10``.
     :type double_precision: class:`int <python:int>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -531,8 +535,8 @@ def to_json(data: Union['os.PathLike[Any]', BytesIO, bytes],
       :class:`datetime <python:datetime.datetime>`, or
       :class:`date <python:datetime.date>`, etc. representations (or Pandas
       :class:`datetime64 <pandas:datetime64>`, depending on the ``dates_as_datetime64``
-      parameter). If ``False``, will leave the original integer representation. Defaults to
-      ``True``.
+      parameter). If ``False``, will leave the original integer representation. Defaults
+      to ``True``.
     :type convert_datetimes: :class:`bool <python:bool>`
 
     :param dates_as_datetime64: If ``True``, will return any date values as Pandas
@@ -612,9 +616,9 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :param layout: Indicates the layout schema to use for the JSON representation of the
       data. Accepts:
 
-        * ``records``, where the resulting YAML object represents an array of objects where
-          each object corresponds to a single record, with key/value pairs for each column
-          and that record's corresponding value
+        * ``records``, where the resulting YAML object represents an array of objects
+          where each object corresponds to a single record, with key/value pairs for each
+          column and that record's corresponding value
         * ``table``, where the resulting JSON object contains a metadata (data map)
           describing the data schema along with the resulting collection of record objects
 
@@ -625,8 +629,9 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
       apply for floating point values. Defaults to ``10``.
     :type double_precision: class:`int <python:int>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -674,8 +679,8 @@ def to_yaml(data: Union['os.PathLike[Any]', BytesIO, bytes],
       :class:`datetime <python:datetime.datetime>`, or
       :class:`date <python:datetime.date>`, etc. representations (or Pandas
       :class:`datetime64 <pandas:datetime64>`, depending on the ``dates_as_datetime64``
-      parameter). If ``False``, will leave the original integer representation. Defaults to
-      ``True``.
+      parameter). If ``False``, will leave the original integer representation. Defaults
+      to ``True``.
     :type convert_datetimes: :class:`bool <python:bool>`
 
     :param dates_as_datetime64: If ``True``, will return any date values as Pandas
@@ -751,9 +756,9 @@ def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
     :param layout: Indicates the layout schema to use for the JSON representation of the
       data. Accepts:
 
-        * ``records``, where the resulting YAML object represents an array of objects where
-          each object corresponds to a single record, with key/value pairs for each column
-          and that record's corresponding value
+        * ``records``, where the resulting YAML object represents an array of objects
+          where each object corresponds to a single record, with key/value pairs for each
+          column and that record's corresponding value
         * ``table``, where the resulting JSON object contains a metadata (data map)
           describing the data schema along with the resulting collection of record objects
 
@@ -764,8 +769,9 @@ def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
       apply for floating point values. Defaults to ``10``.
     :type double_precision: class:`int <python:int>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -813,8 +819,8 @@ def to_dict(data: Union['os.PathLike[Any]', BytesIO, bytes],
       :class:`datetime <python:datetime.datetime>`, or
       :class:`date <python:datetime.date>`, etc. representations (or Pandas
       :class:`datetime64 <pandas:datetime64>`, depending on the ``dates_as_datetime64``
-      parameter). If ``False``, will leave the original integer representation. Defaults to
-      ``True``.
+      parameter). If ``False``, will leave the original integer representation. Defaults
+      to ``True``.
     :type convert_datetimes: :class:`bool <python:bool>`
 
     :param dates_as_datetime64: If ``True``, will return any date values as Pandas
@@ -907,8 +913,9 @@ def to_excel(data: Union['os.PathLike[Any]', BytesIO, bytes],
       labels. If ``False``, will not include a header row. Defaults to ``True``.
     :type include_header: :class:`bool <python:bool>`
 
-    :param limit: The number of records to read from the data. If :obj:`None <python:None>`
-      will return all records. Defaults to :obj:`None <python:None>`.
+    :param limit: The number of records to read from the data. If
+      :obj:`None <python:None>` will return all records. Defaults to
+      :obj:`None <python:None>`.
     :type limit: :class:`int <python:int>` or :obj:`None <python:None>`
 
     :param offset: The record at which to start reading the data. Defaults to 0 (first
@@ -956,8 +963,8 @@ def to_excel(data: Union['os.PathLike[Any]', BytesIO, bytes],
       :class:`datetime <python:datetime.datetime>`, or
       :class:`date <python:datetime.date>`, etc. representations (or Pandas
       :class:`datetime64 <pandas:datetime64>`, depending on the ``dates_as_datetime64``
-      parameter). If ``False``, will leave the original integer representation. Defaults to
-      ``True``.
+      parameter). If ``False``, will leave the original integer representation. Defaults
+      to ``True``.
     :type convert_datetimes: :class:`bool <python:bool>`
 
     :param dates_as_datetime64: If ``True``, will return any date values as Pandas

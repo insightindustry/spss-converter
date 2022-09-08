@@ -73,24 +73,23 @@ def from_dataframe(df: DataFrame,
         as_pyreadstat = None
 
     if target and is_file:
-        with open(target, 'wb') as target_file:
-            if as_pyreadstat:
-                pyreadstat.write_sav(
-                    df = df,
-                    dst_path = target_file,
-                    file_label = as_pyreadstat.file_label,
-                    column_labels = as_pyreadstat.column_labels,
-                    compress = compress,
-                    note = as_pyreadstat.notes,
-                    variable_value_labels = as_pyreadstat.variable_value_labels,
-                    missing_ranges = as_pyreadstat.missing_ranges,
-                    variable_display_width = as_pyreadstat.variable_display_width,
-                    variable_measure = as_pyreadstat.variable_measure
-                )
-            else:
-                pyreadstat.write_sav(df = df,
-                                     dst_path = target_file,
-                                     compress = compress)
+        if as_pyreadstat:
+            pyreadstat.write_sav(
+                df = df,
+                dst_path = target,
+                file_label = as_pyreadstat.file_label,
+                column_labels = as_pyreadstat.column_labels,
+                compress = compress,
+                note = as_pyreadstat.notes,
+                variable_value_labels = as_pyreadstat.variable_value_labels,
+                missing_ranges = as_pyreadstat.missing_ranges,
+                variable_display_width = as_pyreadstat.variable_display_width,
+                variable_measure = as_pyreadstat.variable_measure
+            )
+        else:
+            pyreadstat.write_sav(df = df,
+                                 dst_path = target,
+                                 compress = compress)
 
     else:
         with tempfile.NamedTemporaryFile() as temp_file:
@@ -399,5 +398,5 @@ def apply_metadata(df: DataFrame,
     as_pyreadstat = metadata.to_pyreadstat()
 
     return pyreadstat.set_value_labels(df,
-                                       metadata = as_pyreadstat.value_labels,
+                                       metadata = as_pyreadstat,
                                        formats_as_category = as_category)
