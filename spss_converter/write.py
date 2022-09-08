@@ -398,5 +398,5 @@ def apply_metadata(df: DataFrame,
     as_pyreadstat = metadata.to_pyreadstat()
 
     return pyreadstat.set_value_labels(df,
-                                       metadata = as_pyreadstat.value_labels,
+                                       metadata = as_pyreadstat,
                                        formats_as_category = as_category)
