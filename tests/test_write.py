@@ -155,26 +155,37 @@ def test_from_dict(input_files, filename, as_file, error):
             result = write.from_dict(as_dict)
 
 
-@pytest.mark.parametrize('filename, as_file, error', [
-    ('sample.sav', True, None),
-    ('sample.zsav', True, None),
-    ('sample_large.sav', True, None),
-    ('sample_missing.sav', True, None),
-    ('ordered_category.sav', True, None),
-    ('tegulu.sav', True, None),
-    ('test_width.sav', True, None),
+@pytest.mark.parametrize('filename, as_file, kwargs, error', [
+    ('sample.sav', True, {}, None),
+    ('sample.zsav', True, {}, None),
+    ('sample_large.sav', True, {}, None),
+    ('sample_missing.sav', True, {}, None),
+    ('ordered_category.sav', True, {}, None),
+    ('tegulu.sav', True, {}, None),
+    ('test_width.sav', True, {}, None),
 
-    ('sample.sav', False, None),
-    ('sample.zsav', False, None),
-    ('sample_large.sav', False, None),
-    ('sample_missing.sav', False, None),
-    ('ordered_category.sav', False, None),
-    ('tegulu.sav', False, None),
-    ('test_width.sav', False, None),
+    ('sample.sav', False, {}, None),
+    ('sample.zsav', False, {}, None),
+    ('sample_large.sav', False, {}, None),
+    ('sample_missing.sav', False, {}, None),
+    ('ordered_category.sav', False, {}, None),
+    ('tegulu.sav', False, {}, None),
+    ('test_width.sav', False, {}, None),
 
-    ('hebrews.sav', True, errors.InvalidVariableNameError),
+    ('hebrews.sav', True, {}, errors.InvalidVariableNameError),
+
+    ('sample.sav', True, {'layout': 'table'}, None),
+    ('sample.sav', True, {'layout': 'records'}, None),
+    ('sample.sav', True, {'orient': 'table'}, None),
+    ('sample.sav', True, {'orient': 'records'}, None),
+
+    ('sample.sav', False, {'layout': 'table'}, None),
+    ('sample.sav', False, {'layout': 'records'}, None),
+    ('sample.sav', False, {'orient': 'table'}, None),
+    ('sample.sav', False, {'orient': 'records'}, None),
+
 ])
-def test_from_json(input_files, filename, as_file, error):
+def test_from_json(input_files, filename, as_file, kwargs, error):
     input_data = check_input_file(input_files, filename)
     if not as_file:
         with open(input_data, 'rb') as file_:
@@ -182,41 +193,59 @@ def test_from_json(input_files, filename, as_file, error):
     else:
         data = input_data
 
+    layout = kwargs.get('layout', None) or kwargs.get('orient', None)
     if not error:
-        as_json = read.to_json(data, limit = 1)
+        if layout:
+            as_json = read.to_json(data, limit = 1, layout = layout)
+        else:
+            as_json = read.to_json(data, limit = 1)
         assert as_json is not None
 
-        result = write.from_json(as_json)
+        result = write.from_json(as_json, **kwargs)
         assert result is not None
 
     else:
         with pytest.raises(error):
-            as_json = read.to_json(data, limit = 1)
+            if layout:
+                as_json = read.to_json(data, limit = 1, layout = layout)
+            else:
+                as_json = read.to_json(data, limit = 1)
             assert as_json is not None
 
-            result = write.from_json(as_json)
+            result = write.from_json(as_json, **kwargs)
 
 
-@pytest.mark.parametrize('filename, as_file, error', [
-    ('sample.sav', True, None),
-    ('sample.zsav', True, None),
-    ('sample_large.sav', True, None),
-    ('sample_missing.sav', True, None),
-    ('ordered_category.sav', True, None),
-    ('tegulu.sav', True, None),
-    ('test_width.sav', True, None),
+@pytest.mark.parametrize('filename, as_file, kwargs, error', [
+    ('sample.sav', True, {}, None),
+    ('sample.zsav', True, {}, None),
+    ('sample_large.sav', True, {}, None),
+    ('sample_missing.sav', True, {}, None),
+    ('ordered_category.sav', True, {}, None),
+    ('tegulu.sav', True, {}, None),
+    ('test_width.sav', True, {}, None),
 
-    ('sample.sav', False, None),
-    ('sample.zsav', False, None),
-    ('sample_large.sav', False, None),
-    ('sample_missing.sav', False, None),
-    ('ordered_category.sav', False, None),
-    ('tegulu.sav', False, None),
-    ('test_width.sav', False, None),
+    ('sample.sav', False, {}, None),
+    ('sample.zsav', False, {}, None),
+    ('sample_large.sav', False, {}, None),
+    ('sample_missing.sav', False, {}, None),
+    ('ordered_category.sav', False, {}, None),
+    ('tegulu.sav', False, {}, None),
+    ('test_width.sav', False, {}, None),
 
-    ('hebrews.sav', True, errors.InvalidVariableNameError),
+    ('hebrews.sav', True, {}, errors.InvalidVariableNameError),
+
+    ('sample.sav', True, {'layout': 'table'}, None),
+    ('sample.sav', True, {'layout': 'records'}, None),
+    ('sample.sav', True, {'orient': 'table'}, None),
+    ('sample.sav', True, {'orient': 'records'}, None),
+
+    ('sample.sav', False, {'layout': 'table'}, None),
+    ('sample.sav', False, {'layout': 'records'}, None),
+    ('sample.sav', False, {'orient': 'table'}, None),
+    ('sample.sav', False, {'orient': 'records'}, None),
+
 ])
-def test_from_yaml(input_files, filename, as_file, error):
+def test_from_yaml(input_files, filename, as_file, kwargs, error):
     input_data = check_input_file(input_files, filename)
     if not as_file:
         with open(input_data, 'rb') as file_:
@@ -224,19 +253,26 @@ def test_from_yaml(input_files, filename, as_file, error):
     else:
         data = input_data
 
+    layout = kwargs.get('layout', None) or kwargs.get('orient', None)
     if not error:
-        as_yaml = read.to_yaml(data, limit = 1)
+        if layout:
+            as_yaml = read.to_yaml(data, limit = 1, layout = layout)
+        else:
+            as_yaml = read.to_yaml(data, limit = 1, **kwargs)
         assert as_yaml is not None
 
-        result = write.from_yaml(as_yaml)
+        result = write.from_yaml(as_yaml, **kwargs)
         assert result is not None
 
     else:
         with pytest.raises(error):
-            as_yaml = read.to_yaml(data, limit = 1)
+            if layout:
+                as_yaml = read.to_yaml(data, limit = 1, layout = layout)
+            else:
+                as_yaml = read.to_yaml(data, limit = 1, **kwargs)
             assert as_yaml is not None
 
-            result = write.from_yaml(as_yaml)
+            result = write.from_yaml(as_yaml, layout = layout)
 
 
 @pytest.mark.parametrize('filename, as_file, error', [

@@ -221,6 +221,7 @@ def from_dict(as_dict: dict,
 
 def from_json(as_json: Union[str, 'PathLike[Any]', BytesIO],
               target: Optional[Union['PathLike[Any]', BytesIO]] = None,
+              layout: str = 'records',
               compress: bool = False,
               **kwargs):
     """Convert JSON data into an SPSS dataset.
@@ -242,12 +243,33 @@ def from_json(as_json: Union[str, 'PathLike[Any]', BytesIO],
     :type target: Path-like / :class:`BytesIO <python:io.BytesIO>` /
       :obj:`None <python:None>`
 
+    :param layout: Indicates the layout schema to use for the JSON representation of the
+      data. Accepts:
+
+        * ``records``, where the resulting JSON object represents an array of objects
+          where each object corresponds to a single record, with key/value pairs for each
+          column and that record's corresponding value
+        * ``table``, where the resulting JSON object contains a metadata (data map)
+          describing the data schema along with the resulting collection of record objects
+
+      Defaults to ``records``.
+
+    :type layout: :class:`str <python:str>`
+
     :param compress: If ``True``, will return data in the compressed ZSAV format. If
       ``False``, will return data in the standards SAV format. Defaults to ``False``.
     :type compress: :class:`bool <python:bool>`
 
     :param kwargs: Additional keyword arguments which will be passed onto the
       :func:`pandas.read_json() <pandas:pandas.read_json>` function.
+
+      .. warning::
+
+        If you supply an ``orient`` keyword argument (which is supported by
+        :func:`pandas.read_json() <pandas:pandas.read_json>`), the ``orient``
+        value will *override* the value supplied for ``layout``. This is an
+        advanced use case, so use with caution.
+
     :type kwargs: :class:`dict <python:dict>`
 
     :returns: A :class:`BytesIO <python:io.BytesIO>` object containing the SPSS data if
@@ -256,7 +278,16 @@ def from_json(as_json: Union[str, 'PathLike[Any]', BytesIO],
     :rtype: :class:`BytesIO <python:io.BytesIO>` or :obj:`None <python:None>`
 
     """
-    df = pandas.read_json(as_json, **kwargs)
+    if layout not in ['records', 'table']:
+        raise errors.InvalidLayoutError('layout must be either "records" or "table". '
+                                        f'Was: "{layout}"')
+
+    orient = kwargs.pop('orient', layout)
+
+    df = pandas.read_json(as_json,
+                          orient = orient,
+                          **kwargs)
+
     result = from_dataframe(df,
                             target = target,
                             compress = compress)
@@ -266,6 +297,7 @@ def from_json(as_json: Union[str, 'PathLike[Any]', BytesIO],
 
 def from_yaml(as_yaml: Union[str, 'PathLike[Any]', BytesIO],
               target: Optional[Union['PathLike[Any]', BytesIO]] = None,
+              layout: str = 'records',
               compress: bool = False,
               **kwargs):
     """Convert YAML data into an SPSS dataset.
@@ -287,12 +319,35 @@ def from_yaml(as_yaml: Union[str, 'PathLike[Any]', BytesIO],
     :type target: Path-like / :class:`BytesIO <python:io.BytesIO>` /
       :obj:`None <python:None>`
 
+    :param layout: Indicates the layout schema to expect for the YAML representation of the
+      data. Accepts:
+
+        * ``records``, where the resulting JSON object represents an array of objects
+          where each object corresponds to a single record, with key/value pairs for each
+          column and that record's corresponding value
+        * ``table``, where the resulting JSON object contains a metadata (data map)
+          describing the data schema along with the resulting collection of record objects
+
+      Defaults to ``records``.
+    :type layout: :class:`str <python:str>`
+
     :param compress: If ``True``, will return data in the compressed ZSAV format. If
       ``False``, will return data in the standards SAV format. Defaults to ``False``.
     :type compress: :class:`bool <python:bool>`
 
     :param kwargs: Additional keyword arguments which will be passed onto the
-      :meth:`DataFrame.from_dict() <pandas:pandas.DataFrame.from_dict>` method.
+      :meth:`pandas.from_json() <pandas:pandas.from_json>` function.
+
+    :param kwargs: Additional keyword arguments which will be passed onto the
+      :func:`pandas.read_json() <pandas:pandas.read_json>` function.
+
+      .. warning::
+
+        If you supply an ``orient`` keyword argument (which is supported by
+        :func:`pandas.read_json() <pandas:pandas.read_json>`), the ``orient``
+        value will *override* the value supplied for ``layout``. This is an
+        advanced use case, so use with caution.
+
     :type kwargs: :class:`dict <python:dict>`
 
     :returns: A :class:`BytesIO <python:io.BytesIO>` object containing the SPSS data if
@@ -312,6 +367,7 @@ def from_yaml(as_yaml: Union[str, 'PathLike[Any]', BytesIO],
 
     return from_json(as_json,
                      target = target,
+                     layout = layout,
                      compress = compress,
                      **kwargs)
 
