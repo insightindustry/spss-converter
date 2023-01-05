@@ -2,7 +2,7 @@
    :header-rows: 1
 
    * - Python 3.x
-   * - | * `Pandas v0.24 <https://pandas.pydata.org/docs/>`_ or higher
+   * - | * `Pandas v1.2 <https://pandas.pydata.org/docs/>`_ or higher
        | * `Pyreadstat v1.0 <https://github.com/Roche/pyreadstat>`_ or higher
        | * `OpenPyXL v.3.0.7 <https://openpyxl.readthedocs.io/en/stable/>`_ or higher
        | * `PyYAML v3.10 <https://github.com/yaml/pyyaml>`_ or higher
